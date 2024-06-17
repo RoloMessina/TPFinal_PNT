@@ -65,8 +65,7 @@ namespace TPFinal_PNT1.Migrations
                         name: "FK_Tratamientos_Usuarios_ProfesionalId",
                         column: x => x.ProfesionalId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -87,8 +86,7 @@ namespace TPFinal_PNT1.Migrations
                         name: "FK_Turnos_Usuarios_PacienteId",
                         column: x => x.PacienteId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Turnos_Usuarios_ProfesionalId",
                         column: x => x.ProfesionalId,

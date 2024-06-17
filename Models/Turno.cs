@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,3 +22,4 @@ namespace TPFinal_PNT1.Models
         public Profesional Profesional { get; set; }
     }
 }
+

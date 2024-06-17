@@ -168,7 +168,7 @@ namespace TPFinal_PNT1.Migrations
                     b.HasOne("TPFinal_PNT1.Models.Profesional", "Profesional")
                         .WithMany("TratamientosAsignados")
                         .HasForeignKey("ProfesionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Paciente");
@@ -181,7 +181,7 @@ namespace TPFinal_PNT1.Migrations
                     b.HasOne("TPFinal_PNT1.Models.Paciente", "Paciente")
                         .WithMany("Turnos")
                         .HasForeignKey("PacienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TPFinal_PNT1.Models.Profesional", "Profesional")

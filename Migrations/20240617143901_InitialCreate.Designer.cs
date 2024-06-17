@@ -12,7 +12,7 @@ using TPFinal_PNT1.Context;
 namespace TPFinal_PNT1.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20240613014939_InitialCreate")]
+    [Migration("20240617143901_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -171,7 +171,7 @@ namespace TPFinal_PNT1.Migrations
                     b.HasOne("TPFinal_PNT1.Models.Profesional", "Profesional")
                         .WithMany("TratamientosAsignados")
                         .HasForeignKey("ProfesionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Paciente");
@@ -184,7 +184,7 @@ namespace TPFinal_PNT1.Migrations
                     b.HasOne("TPFinal_PNT1.Models.Paciente", "Paciente")
                         .WithMany("Turnos")
                         .HasForeignKey("PacienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TPFinal_PNT1.Models.Profesional", "Profesional")
