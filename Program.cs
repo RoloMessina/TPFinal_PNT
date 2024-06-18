@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using TPFinal_PNT1.Context;
+using TPFinal_PNT1.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar servicios
+builder.Services.AddScoped<AgendaDeTurnos>();
 builder.Services.AddDbContext<AgendaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -29,5 +31,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "asignarTurno",
+    pattern: "{controller=AgendaDeTurnos}/{action=AsignarTurno}");
 
 app.Run();
