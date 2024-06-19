@@ -50,7 +50,7 @@ public class AgendaDeTurnosController : Controller
 
     // Acción POST para procesar el formulario de registrar tratamiento
     [HttpPost]
-    public IActionResult RegistrarTratamiento(Tratamiento tratamiento)
+    public IActionResult RegistrarTratamiento([Bind("Fecha,Tipo,PacienteId,ProfesionalId")] Tratamiento tratamiento)
     {
         if (ModelState.IsValid)
         {
