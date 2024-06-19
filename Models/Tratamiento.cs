@@ -10,12 +10,12 @@ namespace TPFinal_PNT1.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(200)]
-        public string Descripcion { get; set; }
-
+        
         [Required]
         public DateTime Fecha { get; set; }
+
+        [Required]
+        public TipoTratamiento Tipo { get; set; }  // Uso del enum
 
         [ForeignKey("Paciente")]
         public int PacienteId { get; set; }
@@ -26,3 +26,4 @@ namespace TPFinal_PNT1.Models
         public Profesional Profesional { get; set; }
     }
 }
+

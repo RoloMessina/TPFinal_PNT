@@ -7,7 +7,6 @@ namespace TPFinal_PNT1.Context
     {
         public AgendaContext(DbContextOptions<AgendaContext> options) : base(options) { }
 
-        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Profesional> Profesionales { get; set; }
         public DbSet<Turno> Turnos { get; set; }
@@ -17,32 +16,32 @@ namespace TPFinal_PNT1.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Paciente>().ToTable("Pacientes");
+            modelBuilder.Entity<Profesional>().ToTable("Profesionales");
+
             modelBuilder.Entity<Profesional>()
                 .HasMany(p => p.TurnosAsignados)
                 .WithOne(t => t.Profesional)
                 .HasForeignKey(t => t.ProfesionalId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Paciente>()
                 .HasMany(p => p.Turnos)
                 .WithOne(t => t.Paciente)
                 .HasForeignKey(t => t.PacienteId)
-                .OnDelete(DeleteBehavior.NoAction); // Cambiar a NoAction
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Paciente>()
                 .HasMany(p => p.Tratamientos)
                 .WithOne(t => t.Paciente)
                 .HasForeignKey(t => t.PacienteId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Profesional>()
                 .HasMany(p => p.TratamientosAsignados)
                 .WithOne(t => t.Profesional)
                 .HasForeignKey(t => t.ProfesionalId)
-                .OnDelete(DeleteBehavior.NoAction); // Cambiar a NoAction
-
-            // Configurar Fecha como entidad sin clave
-            modelBuilder.Entity<Fecha>().HasNoKey();
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -12,8 +12,8 @@ using TPFinal_PNT1.Context;
 namespace TPFinal_PNT1.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20240617143901_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240618215826_AddPacienteYProfesional")]
+    partial class AddPacienteYProfesional
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,21 +25,70 @@ namespace TPFinal_PNT1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TPFinal_PNT1.Models.Fecha", b =>
+            modelBuilder.Entity("TPFinal_PNT1.Models.Paciente", b =>
                 {
-                    b.Property<int>("Anio")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Dia")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DNI")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pacientes", (string)null);
+                });
+
+            modelBuilder.Entity("TPFinal_PNT1.Models.Profesional", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<double>("Hora")
-                        .HasColumnType("float");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Mes")
-                        .HasColumnType("int");
+                    b.Property<string>("DNI")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
-                    b.ToTable("Fecha");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Profesionales", (string)null);
                 });
 
             modelBuilder.Entity("TPFinal_PNT1.Models.Tratamiento", b =>
@@ -50,11 +99,6 @@ namespace TPFinal_PNT1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
@@ -62,6 +106,9 @@ namespace TPFinal_PNT1.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("ProfesionalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Tipo")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -90,74 +137,13 @@ namespace TPFinal_PNT1.Migrations
                     b.Property<int>("ProfesionalId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProfesionalId1")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PacienteId");
 
                     b.HasIndex("ProfesionalId");
 
-                    b.HasIndex("ProfesionalId1");
-
                     b.ToTable("Turnos");
-                });
-
-            modelBuilder.Entity("TPFinal_PNT1.Models.Usuario", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DNI")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("NombreCompleto")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Usuarios");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Usuario");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("TPFinal_PNT1.Models.Paciente", b =>
-                {
-                    b.HasBaseType("TPFinal_PNT1.Models.Usuario");
-
-                    b.HasDiscriminator().HasValue("Paciente");
-                });
-
-            modelBuilder.Entity("TPFinal_PNT1.Models.Profesional", b =>
-                {
-                    b.HasBaseType("TPFinal_PNT1.Models.Usuario");
-
-                    b.HasDiscriminator().HasValue("Profesional");
                 });
 
             modelBuilder.Entity("TPFinal_PNT1.Models.Tratamiento", b =>
@@ -165,13 +151,13 @@ namespace TPFinal_PNT1.Migrations
                     b.HasOne("TPFinal_PNT1.Models.Paciente", "Paciente")
                         .WithMany("Tratamientos")
                         .HasForeignKey("PacienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TPFinal_PNT1.Models.Profesional", "Profesional")
                         .WithMany("TratamientosAsignados")
                         .HasForeignKey("ProfesionalId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Paciente");
@@ -184,18 +170,14 @@ namespace TPFinal_PNT1.Migrations
                     b.HasOne("TPFinal_PNT1.Models.Paciente", "Paciente")
                         .WithMany("Turnos")
                         .HasForeignKey("PacienteId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TPFinal_PNT1.Models.Profesional", "Profesional")
                         .WithMany("TurnosAsignados")
                         .HasForeignKey("ProfesionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("TPFinal_PNT1.Models.Profesional", null)
-                        .WithMany("Turnos")
-                        .HasForeignKey("ProfesionalId1");
 
                     b.Navigation("Paciente");
 
@@ -212,8 +194,6 @@ namespace TPFinal_PNT1.Migrations
             modelBuilder.Entity("TPFinal_PNT1.Models.Profesional", b =>
                 {
                     b.Navigation("TratamientosAsignados");
-
-                    b.Navigation("Turnos");
 
                     b.Navigation("TurnosAsignados");
                 });

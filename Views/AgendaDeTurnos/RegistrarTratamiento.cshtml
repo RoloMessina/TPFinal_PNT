@@ -1,0 +1,45 @@
+﻿@model TPFinal_PNT1.Models.Tratamiento
+
+@{
+    ViewData["Title"] = "Registrar Tratamiento";
+}
+
+<h2>Registrar Tratamiento</h2>
+
+<form asp-action="RegistrarTratamiento" method="post">
+    <div class="form-group">
+        <label asp-for="Fecha" class="control-label"></label>
+        <input asp-for="Fecha" class="form-control" type="datetime-local" />
+        <span asp-validation-for="Fecha" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PacienteId" class="control-label"></label>
+        <select asp-for="PacienteId" class="form-control" asp-items="ViewBag.PacienteId"></select>
+        <span asp-validation-for="PacienteId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProfesionalId" class="control-label"></label>
+        <select asp-for="ProfesionalId" class="form-control" asp-items="ViewBag.ProfesionalId"></select>
+        <span asp-validation-for="ProfesionalId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Tipo" class="control-label"></label>
+        <select asp-for="Tipo" class="form-control">
+            <option value="">Seleccione un tipo de tratamiento</option>
+            @foreach (var tipo in Enum.GetValues(typeof(TPFinal_PNT1.Models.TipoTratamiento)))
+            {
+                <option value="@tipo">@tipo</option>
+            }
+        </select>
+        <span asp-validation-for="Tipo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Registrar" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

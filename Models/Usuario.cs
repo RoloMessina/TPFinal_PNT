@@ -1,15 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TPFinal_PNT1.Models
 {
-    public class Usuario
+    public abstract class Usuario
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(100)]
         public string NombreCompleto { get; set; }
@@ -25,7 +19,5 @@ namespace TPFinal_PNT1.Models
         [Required]
         [MaxLength(100)]
         public string Email { get; set; }
-
-        public ICollection<Turno> Turnos { get; set; }
     }
 }

@@ -16,7 +16,7 @@ public class AgendaDeTurnosController : Controller
         _context = context;
     }
 
-    // Get para obtener vista de turno
+/*    // Get para obtener vista de turno
     public IActionResult AsignarTurno()
     {
         ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "Nombre");
@@ -36,18 +36,42 @@ public class AgendaDeTurnosController : Controller
     {
         var turnos = _agendaDeTurnos.ListarTurnosAsignados();
         return View(turnos);
-    }
+    }*/
 
-    [HttpPost]
-    public IActionResult RegistrarTratamiento(Paciente paciente, Profesional profesional, Tratamiento tratamiento, DateTime fecha)
+    // Acción GET para mostrar el formulario de registrar tratamiento
+    [HttpGet]
+    public IActionResult RegistrarTratamiento()
     {
-        var exito = _agendaDeTurnos.RegistrarTratamiento(paciente, profesional, tratamiento, fecha);
-        return Json(new { success = exito });
-    }
-
-    public IActionResult VerTratamientosAsignados(Profesional profesional)
-    {
-        _agendaDeTurnos.VerTratamientosAsignados(profesional);
+        ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto");
+        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto");
         return View();
+    }
+
+    // Acción POST para procesar el formulario de registrar tratamiento
+    [HttpPost]
+    public IActionResult RegistrarTratamiento(Tratamiento tratamiento)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Tratamientos.Add(tratamiento);
+            _context.SaveChanges();
+            return RedirectToAction("Index"); // Redirigir a una acción apropiada después de registrar el tratamiento
+        }
+
+        ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto", tratamiento.PacienteId);
+        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto", tratamiento.ProfesionalId);
+        return View(tratamiento);
+    }
+
+
+    // Acción GET para mostrar tratamientos asignados a un profesional
+    public IActionResult VerTratamientosAsignados()
+    {
+        var tratamientos = _context.Tratamientos
+            .Include(t => t.Paciente)
+            .Include(t => t.Profesional)
+            .ToList();
+
+        return View(tratamientos);
     }
 }
