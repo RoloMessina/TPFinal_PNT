@@ -16,34 +16,35 @@ public class AgendaDeTurnosController : Controller
         _context = context;
     }
 
-/*    // Get para obtener vista de turno
-    public IActionResult AsignarTurno()
-    {
-        ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "Nombre");
-        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "Nombre");
-        return View();
-    }
+        // Get para obtener vista de turno
+        public IActionResult AsignarTurno()
+        {
+            ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "Nombre");
+            ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "Nombre");
+            return View();
+        }
 
 
-    [HttpPost]
-    public IActionResult AsignarTurno(Usuario usuario, DateTime fecha)
-    {
-        var exito = _agendaDeTurnos.AsignarTurno(usuario, fecha);
-        return Json(new { success = exito });
-    }
+        [HttpPost]
+        public IActionResult AsignarTurno(Usuario usuario, DateTime fecha)
+        {
+            var exito = _agendaDeTurnos.AsignarTurno(usuario, fecha);
+            return Json(new { success = exito });
+        }
 
-    public IActionResult ListarTurnosAsignados()
-    {
-        var turnos = _agendaDeTurnos.ListarTurnosAsignados();
-        return View(turnos);
-    }*/
+        public IActionResult ListarTurnosAsignados()
+        {
+            var turnos = _agendaDeTurnos.ListarTurnosAsignados();
+            return View(turnos);
+        }
 
+    
     // Acción GET para mostrar el formulario de registrar tratamiento
     [HttpGet]
     public IActionResult RegistrarTratamiento()
     {
-        ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto");
-        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto");
+        ViewData["PacienteId"] = new SelectList(_context.Pacientes.ToList(), "Id", "NombreCompleto");
+        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales.ToList(), "Id", "NombreCompleto");
         return View();
     }
 
@@ -58,20 +59,16 @@ public class AgendaDeTurnosController : Controller
             return RedirectToAction("Index"); // Redirigir a una acción apropiada después de registrar el tratamiento
         }
 
-        ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto", tratamiento.PacienteId);
-        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto", tratamiento.ProfesionalId);
+        // Log de errores de validación
+        var errors = ModelState.Values.SelectMany(v => v.Errors);
+        foreach (var error in errors)
+        {
+            // Puedes usar cualquier método de logueo, aquí uso Console.WriteLine para simplicidad
+            Console.WriteLine(error.ErrorMessage);
+        }
+
+        ViewData["PacienteId"] = new SelectList(_context.Pacientes.ToList(), "Id", "NombreCompleto", tratamiento.PacienteId);
+        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales.ToList(), "Id", "NombreCompleto", tratamiento.ProfesionalId);
         return View(tratamiento);
-    }
-
-
-    // Acción GET para mostrar tratamientos asignados a un profesional
-    public IActionResult VerTratamientosAsignados()
-    {
-        var tratamientos = _context.Tratamientos
-            .Include(t => t.Paciente)
-            .Include(t => t.Profesional)
-            .ToList();
-
-        return View(tratamientos);
     }
 }
