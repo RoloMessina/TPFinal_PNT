@@ -73,18 +73,17 @@ public class AgendaDeTurnosController : Controller
     }
 
     // Acción POST para procesar el formulario de registrar tratamiento
-    //public IActionResult RegistrarTratamiento([Bind("Fecha,Tipo,PacienteId,ProfesionalId")] Tratamiento tratamiento)
     [HttpPost]
-    public IActionResult RegistrarTratamiento(Tratamiento tratamiento)
+    public IActionResult RegistrarTratamiento([Bind("Fecha,Tipo,PacienteId,ProfesionalId")] Tratamiento tratamiento)
     {
-        _logger.LogWarning("Tratamiento >>>> Fecha: " + tratamiento.Fecha + ", Tipo: " + tratamiento.Tipo + ", PacienteId: " + tratamiento.PacienteId + ", ProfesionalId: " + tratamiento.ProfesionalId);
+        // Excluir las propiedades de navegación del ModelState
+        ModelState.Remove("Paciente");
+        ModelState.Remove("Profesional");
 
         if (ModelState.IsValid)
         {
             var paciente = _context.Pacientes.Find(tratamiento.PacienteId);
             var profesional = _context.Profesionales.Find(tratamiento.ProfesionalId);
-            _logger.LogWarning("PACIENTE ::", paciente );
-            _logger.LogWarning("PROFESIONAL:: " + profesional);
 
             if (paciente == null || profesional == null)
             {
@@ -97,17 +96,11 @@ public class AgendaDeTurnosController : Controller
             tratamiento.Paciente = paciente;
             tratamiento.Profesional = profesional;
 
-            var exito = _agendaDeTurnos.RegistrarTratamiento(paciente, profesional, tratamiento, tratamiento.Fecha);
-
-            if (exito)
-            {
-                return RedirectToAction("Index");
-            }
-
-            ModelState.AddModelError(string.Empty, "No se pudo registrar el tratamiento.");
+            _context.Tratamientos.Add(tratamiento);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        // Log de errores de validación
         var errors = ModelState.Values.SelectMany(v => v.Errors);
         foreach (var error in errors)
         {
