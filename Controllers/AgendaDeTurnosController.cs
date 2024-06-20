@@ -44,6 +44,15 @@ public class AgendaDeTurnosController : Controller
             return View();
         }
 
+        bool existeTurno = _context.Turnos.Any(t => t.Fecha == fecha && t.ProfesionalId == profesionalId);
+        if (existeTurno)
+        {
+            ModelState.AddModelError(string.Empty, "Ya existe un turno asignado para ese horario y profesional. Por favor, elige otra fecha u hora.");
+            ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto", pacienteId);
+            ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto", profesionalId);
+            return View();
+        }
+
         var exito = _agendaDeTurnos.AsignarTurno(paciente.Id, profesional.Id, fecha);
 
         if (exito)
@@ -71,6 +80,20 @@ public class AgendaDeTurnosController : Controller
         ViewData["ProfesionalId"] = new SelectList(_context.Profesionales.ToList(), "Id", "NombreCompleto");
         return View();
     }
+
+    [HttpPost]
+    public IActionResult CancelarTurno(int id)
+    {
+        var turno = _context.Turnos.Find(id);
+        if (turno == null)
+        {
+            return NotFound();
+        }
+
+        _agendaDeTurnos.CancelarTurno(turno);
+        return RedirectToAction("ListarTurnosAsignados");
+    }
+
 
     // Acción POST para procesar el formulario de registrar tratamiento
     [HttpPost]

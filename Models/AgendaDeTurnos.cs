@@ -82,17 +82,6 @@ namespace TPFinal_PNT1.Models
             _context.SaveChanges();
         }
 
-        public void VisualizarTurno(Turno turno)
-        {
-            // Lógica para visualizar un turno
-        }
-
-        public bool AsignarTurno(Usuario usuario, DateTime fecha)
-        {
-            // Lógica para asignar un turno a un usuario
-            return true;
-        }
-
         public bool RegistrarTratamiento(Paciente paciente, Profesional profesional, Tratamiento tratamiento, DateTime fecha)
         {
             tratamiento.Fecha = fecha;
@@ -116,6 +105,11 @@ namespace TPFinal_PNT1.Models
         public void VerTratamientosAsignados(Profesional profesional)
         {
             // Lógica para ver tratamientos asignados por un profesional
+        }
+
+        public void VisualizarTurno(Turno turno)
+        {
+            throw new NotImplementedException();
         }
 
         //public bool RegistrarTratamiento(Paciente paciente, Profesional profesional, Tratamiento tratamiento, Fecha fecha)

@@ -4,20 +4,23 @@
     ViewData["Title"] = "Listado de turnos";
 }
 
-<div class="container" >
+<div class="container">
     <h1>Lista de turnos asignados</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Fecha)
+                    @Html.DisplayNameFor(model => model.First().Fecha)
                 </th>
                 <th>
                     Paciente
                 </th>
                 <th>
                     Profesional
+                </th>
+                <th>
+                    Acciones
                 </th>
             </tr>
         </thead>
@@ -34,6 +37,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Profesional.NombreCompleto)
                     </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmCancelModal" data-turnoid="@item.Id">Cancelar</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -43,3 +49,38 @@
         <a asp-action="AsignarTurno">Asignar nuevo turno</a>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmCancelModal" tabindex="-1" aria-labelledby="confirmCancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmCancelModalLabel">Cancelar turno</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cancelar este turno?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <form id="cancelForm" asp-action="CancelarTurno" method="post">
+                    <input type="hidden" name="id" id="turnoId" value="" />
+                    <button type="submit" class="btn btn-danger">Sí, cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Set the turno id in the modal form
+        var confirmCancelModal = document.getElementById('confirmCancelModal')
+        confirmCancelModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget
+            var turnoId = button.getAttribute('data-turnoid')
+            var modalInput = confirmCancelModal.querySelector('.modal-footer #turnoId')
+            modalInput.value = turnoId
+        })
+    </script>
+}
