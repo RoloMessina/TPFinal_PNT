@@ -14,22 +14,45 @@ namespace TPFinal_PNT1.Models
     public class AgendaDeTurnos : ITurnera
     {
         private readonly AgendaContext _context;
+        private readonly ILogger<AgendaDeTurnos> _logger;
 
-        public AgendaDeTurnos(AgendaContext context)
+
+        public AgendaDeTurnos(AgendaContext context, ILogger<AgendaDeTurnos> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        public bool AsignarTurno(Usuario usuario, Fecha fecha)
+
+        public bool AsignarTurno(int pacienteId, int profesionalId, DateTime fecha)
         {
-            // Lógica para asignar turno
-            return true;
+            var turno = new Turno
+            {
+                PacienteId = pacienteId,
+                ProfesionalId = profesionalId,
+                Fecha = fecha
+            };
+
+            _context.Turnos.Add(turno);
+
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al guardar el turno: {ex.Message}");
+                return false;
+            }
         }
 
         public List<Turno> ListarTurnosAsignados()
         {
-            // Lógica para listar turnos asignados
-            return new List<Turno>();
+            return _context.Turnos
+                .Include(t => t.Paciente)
+                .Include(t => t.Profesional)
+                .ToList();
         }
 
         public bool AltaUsuario(Usuario usuario)
@@ -72,8 +95,22 @@ namespace TPFinal_PNT1.Models
 
         public bool RegistrarTratamiento(Paciente paciente, Profesional profesional, Tratamiento tratamiento, DateTime fecha)
         {
-            // Lógica para registrar un tratamiento
-            return true;
+            tratamiento.Fecha = fecha;
+            tratamiento.Paciente = paciente;
+            tratamiento.Profesional = profesional;
+
+            _context.Tratamientos.Add(tratamiento);
+
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al guardar el tratamiento: {ex.Message}");
+                return false;
+            }
         }
 
         public void VerTratamientosAsignados(Profesional profesional)
