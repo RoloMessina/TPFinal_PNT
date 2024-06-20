@@ -2,7 +2,56 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Bienvenidos a nuestro Consultorio</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="position-relative text-center">
+    <div class="carousel-caption">
+        <h1 class="display-4 text-white">Bienvenidos a nuestro Consultorio</h1>
+    </div>
+    <div id="odontologiaCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/images/consulta_3.png" class="d-block w-100 opacity-75" >
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/consulta_1.jpg" class="d-block w-100 opacity-75" >
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/consulta_2.jpg" class="d-block w-100 opacity-75" >
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/consulta.jpg" class="d-block w-100 opacity-75" >
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#odontologiaCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#odontologiaCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
 </div>
+
+<style>
+    .carousel-inner img {
+        max-height: 600px;
+        object-fit: cover;
+    }
+
+    .opacity-75 {
+        opacity: 0.5;
+    }
+
+    .carousel-caption {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+        .carousel-caption h1 {
+            font-size: 3rem;
+        }
+</style>

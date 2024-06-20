@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TPFinal_PNT1.Models.Turno>
+
+@{
+    ViewData["Title"] = "Listado de turnos";
+}
+
+<div class="container" >
+    <h1>Lista de turnos asignados</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fecha)
+                </th>
+                <th>
+                    Paciente
+                </th>
+                <th>
+                    Profesional
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fecha)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Paciente.NombreCompleto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Profesional.NombreCompleto)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <a asp-action="AsignarTurno">Asignar nuevo turno</a>
+    </div>
+</div>
