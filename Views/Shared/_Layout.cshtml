@@ -72,25 +72,50 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="turnosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Turnos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="turnosDropdown">
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="AgendaDeTurnos" asp-action="ListarTurnosAsignados">Ver turnos</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="AgendaDeTurnos" asp-action="AsignarTurno">Asignar turno</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="AgendaDeTurnos" asp-action="RegistrarTratamiento">Registrar Tratamiento</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="AgendaDeTurnos" asp-action="VerTratamientosAsignados">Ver Tratamientos Asignados</a>
-                        </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="turnosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Turnos
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="turnosDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="AgendaDeTurnos" asp-action="ListarTurnosAsignados">Ver turnos</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="AgendaDeTurnos" asp-action="AsignarTurno">Asignar turno</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="tratamientoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Tratamiento
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="tratamientoDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="AgendaDeTurnos" asp-action="RegistrarTratamiento">Registrar Tratamiento</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="AgendaDeTurnos" asp-action="VerTratamientosAsignados">Ver Tratamientos</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="usuarioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Usuario
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="usuarioDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Paciente" asp-action="Create">Alta Paciente</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Profesional" asp-action="Create">Alta Profesional</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Paciente" asp-action="Index">Listar Pacientes</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Profesional" asp-action="Index">Listar Profesionales</a>
+                                    </li>
+                                </ul>
                     </ul>
                 </div>
             </div>

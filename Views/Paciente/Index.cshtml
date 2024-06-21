@@ -1,0 +1,31 @@
+﻿@model IEnumerable<TPFinal_PNT1.Models.Paciente>
+
+@{
+    ViewData["Title"] = "Lista de Pacientes";
+}
+
+<h2>Lista de Pacientes</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre Completo</th>
+            <th>DNI</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.NombreCompleto</td>
+                <td>@item.DNI</td>
+                <td>@item.Email</td>
+                <td>
+                    <!-- Aquí puedes agregar acciones como Editar, Detalles, Eliminar -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

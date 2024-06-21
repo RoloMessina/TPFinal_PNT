@@ -44,4 +44,16 @@ app.MapControllerRoute(
     name: "registrarTratamiento",
     pattern: "{controller=AgendaDeTurnos}/{action=RegistrarTratamiento}");
 
+app.MapControllerRoute(
+    name: "paciente",
+    pattern: "{controller=Paciente}/{action=Create}");
+
+app.MapControllerRoute(
+    name: "listarPacientes",
+    pattern: "{controller=Paciente}/{action=Index}");
+
+app.MapControllerRoute(
+    name: "crearProfesional",
+    pattern: "{controller=Profesional}/{action=Create}");
+
 app.Run();

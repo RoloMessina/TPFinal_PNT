@@ -12,8 +12,8 @@ using TPFinal_PNT1.Context;
 namespace TPFinal_PNT1.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20240618215826_AddPacienteYProfesional")]
-    partial class AddPacienteYProfesional
+    [Migration("20240620221304_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
