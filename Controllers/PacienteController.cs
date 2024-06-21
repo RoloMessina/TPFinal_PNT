@@ -1,18 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TPFinal_PNT1.Context;
 using TPFinal_PNT1.Models;
+using System.Linq;
 
 namespace TPFinal_PNT1.Controllers
 {
     public class PacienteController : Controller
     {
         private readonly AgendaContext _context;
+        private readonly ILogger<PacienteController> _logger;
 
-        public PacienteController(AgendaContext context)
+        public PacienteController(AgendaContext context, ILogger<PacienteController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // Acción GET para mostrar el formulario de crear paciente
@@ -27,7 +29,11 @@ namespace TPFinal_PNT1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("NombreCompleto,DNI,PasswordHash,Email")] Paciente paciente)
         {
-            if (ModelState.IsValid)
+
+            _context.Pacientes.Add(paciente);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Home");
+            /*if (ModelState.IsValid)
             {
                 try
                 {
@@ -38,17 +44,19 @@ namespace TPFinal_PNT1.Controllers
                 catch (Exception ex)
                 {
                     ModelState.AddModelError(string.Empty, $"Error al guardar el paciente: {ex.Message}");
+                    _logger.LogError(ex, "Error al guardar el paciente.");
                 }
             }
+            else
+            {
+                // Log de errores de validación
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    _logger.LogError(error.ErrorMessage); // Registrar el error en el log
+                }
+            }*/
             return View(paciente);
-        }
-
-        // Acción GET para listar todos los pacientes
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var pacientes = await _context.Pacientes.ToListAsync();
-            return View(pacientes);
         }
     }
 }
