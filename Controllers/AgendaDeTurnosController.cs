@@ -72,15 +72,7 @@ public class AgendaDeTurnosController : Controller
         return View(turnos);
     }
 
-    // Acción GET para mostrar el formulario de registrar tratamiento
-    [HttpGet]
-    public IActionResult RegistrarTratamiento()
-    {
-        ViewData["PacienteId"] = new SelectList(_context.Pacientes.ToList(), "Id", "NombreCompleto");
-        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales.ToList(), "Id", "NombreCompleto");
-        return View();
-    }
-
+    
     [HttpPost]
     public IActionResult CancelarTurno(int id)
     {
@@ -94,6 +86,14 @@ public class AgendaDeTurnosController : Controller
         return RedirectToAction("ListarTurnosAsignados");
     }
 
+    // Acción GET para mostrar el formulario de registrar tratamiento
+    [HttpGet]
+    public IActionResult RegistrarTratamiento()
+    {
+        ViewData["PacienteId"] = new SelectList(_context.Pacientes.ToList(), "Id", "NombreCompleto");
+        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales.ToList(), "Id", "NombreCompleto");
+        return View();
+    }
 
     // Acción POST para procesar el formulario de registrar tratamiento
     [HttpPost]

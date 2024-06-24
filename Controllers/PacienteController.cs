@@ -29,34 +29,43 @@ namespace TPFinal_PNT1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("NombreCompleto,DNI,PasswordHash,Email")] Paciente paciente)
         {
-
             _context.Pacientes.Add(paciente);
             _context.SaveChanges();
             return RedirectToAction("Index", "Home");
-            /*if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Pacientes.Add(paciente);
-                    _context.SaveChanges();
-                    return RedirectToAction("Index", "Home");
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError(string.Empty, $"Error al guardar el paciente: {ex.Message}");
-                    _logger.LogError(ex, "Error al guardar el paciente.");
-                }
-            }
-            else
-            {
-                // Log de errores de validación
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                foreach (var error in errors)
-                {
-                    _logger.LogError(error.ErrorMessage); // Registrar el error en el log
-                }
-            }*/
+
+            /*      if (ModelState.IsValid)
+                  {
+                      try
+                      {
+                          _context.Pacientes.Add(paciente);
+                          _context.SaveChanges();
+                          return RedirectToAction("Index", "Home");
+                      }
+                      catch (Exception ex)
+                      {
+                          ModelState.AddModelError(string.Empty, $"Error al guardar el paciente: {ex.Message}");
+                          _logger.LogError(ex, "Error al guardar el paciente.");
+                      }
+                  }
+                  else
+                  {
+                      // Log de errores de validación
+                      var errors = ModelState.Values.SelectMany(v => v.Errors);
+                      foreach (var error in errors)
+                      {
+                          _logger.LogError(error.ErrorMessage); // Registrar el error en el log
+                      }
+                  }*/
+
             return View(paciente);
+        }
+
+        // Acción GET para listar los pacientes
+        [HttpGet]
+        public IActionResult Index()
+        {
+            var pacientes = _context.Pacientes.ToList();
+            return View(pacientes);
         }
     }
 }

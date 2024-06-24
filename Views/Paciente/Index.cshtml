@@ -4,27 +4,23 @@
     ViewData["Title"] = "Lista de Pacientes";
 }
 
-<h2>Lista de Pacientes</h2>
+<h1>Lista de Pacientes</h1>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Nombre Completo</th>
             <th>DNI</th>
             <th>Email</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var paciente in Model)
         {
             <tr>
-                <td>@item.NombreCompleto</td>
-                <td>@item.DNI</td>
-                <td>@item.Email</td>
-                <td>
-                    <!-- Aquí puedes agregar acciones como Editar, Detalles, Eliminar -->
-                </td>
+                <td>@paciente.NombreCompleto</td>
+                <td>@paciente.DNI</td>
+                <td>@paciente.Email</td>
             </tr>
         }
     </tbody>
