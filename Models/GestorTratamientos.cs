@@ -56,26 +56,11 @@ namespace TPFinal_PNT1.Services
                 .ToListAsync();
         }
 
-        public async Task<bool> EliminarTratamiento(int id)
+        public async Task<bool> CancelarTratamiento(Tratamiento t)
         {
-            var tratamiento = await _context.Tratamientos.FindAsync(id);
-            if (tratamiento == null)
-            {
-                _logger.LogError("Tratamiento no encontrado.");
-                return false;
-            }
-
-            _context.Tratamientos.Remove(tratamiento);
+            _context.Tratamientos.Remove(t);
             await _context.SaveChangesAsync();
             return true;
-        }
-
-        public async Task<Tratamiento> ObtenerTratamientoPorId(int id)
-        {
-            return await _context.Tratamientos
-                .Include(t => t.Paciente)
-                .Include(t => t.Profesional)
-                .FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task<bool> ActualizarTratamiento(Tratamiento tratamiento)

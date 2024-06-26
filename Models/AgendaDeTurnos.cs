@@ -70,7 +70,6 @@ namespace TPFinal_PNT1.Models
 
         public void CancelarTurno(Turno turno)
         {
-            // Lógica para cancelar un turno
             _context.Turnos.Remove(turno);
             _context.SaveChanges();
         }

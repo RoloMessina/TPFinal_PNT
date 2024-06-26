@@ -25,23 +25,6 @@ namespace TPFinal_PNT1.Controllers
             _logger = logger;
         }
 
-        // GET: Tratamiento/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tratamiento = await _gestorDeTratamientos.ObtenerTratamientoPorId(id.Value);
-            if (tratamiento == null)
-            {
-                return NotFound();
-            }
-
-            return View(tratamiento);
-        }
-
         // Acción GET para mostrar el formulario de registrar tratamiento
         [HttpGet]
         public IActionResult RegistrarTratamiento()
@@ -75,25 +58,7 @@ namespace TPFinal_PNT1.Controllers
             return View(tratamiento);
         }
 
-        // GET: Tratamiento/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tratamiento = await _gestorDeTratamientos.ObtenerTratamientoPorId(id.Value);
-            if (tratamiento == null)
-            {
-                return NotFound();
-            }
-            ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "DNI", tratamiento.PacienteId);
-            ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "DNI", tratamiento.ProfesionalId);
-            return View(tratamiento);
-        }
-
-        // POST: Tratamiento/Edit
+        // POST: Tratamiento/EditarTratamiento/id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Fecha,Tipo,PacienteId,ProfesionalId,Descripcion")] Tratamiento tratamiento)
@@ -124,39 +89,17 @@ namespace TPFinal_PNT1.Controllers
             return View(tratamientos);
         }
 
-        // GET: Tratamiento/Delete
-        public async Task<IActionResult> Delete(int? id)
+        [HttpPost]
+        public IActionResult CancelarTratamiento(int id)
         {
-            if (id == null)
+            var turno = _context.Tratamientos.Find(id);
+            if (turno == null)
             {
                 return NotFound();
             }
 
-            var tratamiento = await _gestorDeTratamientos.ObtenerTratamientoPorId(id.Value);
-            if (tratamiento == null)
-            {
-                return NotFound();
-            }
-
-            return View(tratamiento);
-        }
-
-        // POST: Tratamiento/Delete
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var result = await _gestorDeTratamientos.EliminarTratamiento(id);
-            if (!result)
-            {
-                ModelState.AddModelError(string.Empty, "Error al eliminar el tratamiento.");
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool TratamientoExists(int id)
-        {
-            return _gestorDeTratamientos.ObtenerTratamientoPorId(id) != null;
+            _gestorDeTratamientos.CancelarTratamiento(turno);
+            return RedirectToAction("VerTratamientos");
         }
     }
 }
