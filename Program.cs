@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using TPFinal_PNT1.Context;
 using TPFinal_PNT1.Models;
+using TPFinal_PNT1.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar servicios
 builder.Services.AddScoped<AgendaDeTurnos>();
+builder.Services.AddScoped<GestorDeTratamientos>();
 builder.Services.AddDbContext<AgendaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -42,7 +44,12 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "registrarTratamiento",
-    pattern: "{controller=AgendaDeTurnos}/{action=RegistrarTratamiento}");
+    pattern: "{controller=TratamientoController}/{action=RegistrarTratamiento}");
+
+app.MapControllerRoute(
+    name: "listarTratamientosAsignados",
+    pattern: "{controller=TratamientoController}/{action=VerTratamientos}");
+
 
 app.MapControllerRoute(
     name: "paciente",
