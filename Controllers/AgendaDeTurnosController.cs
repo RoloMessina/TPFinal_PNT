@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TPFinal_PNT1.Context;
 using TPFinal_PNT1.Models;
-
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 
 public class AgendaDeTurnosController : Controller
 {
@@ -11,16 +13,12 @@ public class AgendaDeTurnosController : Controller
     private readonly AgendaContext _context;
     private readonly ILogger<AgendaDeTurnosController> _logger;
 
-
-
     public AgendaDeTurnosController(AgendaDeTurnos agendaDeTurnos, AgendaContext context, ILogger<AgendaDeTurnosController> logger)
     {
         _agendaDeTurnos = agendaDeTurnos;
         _context = context;
         _logger = logger;
-
     }
-
 
     public IActionResult AsignarTurno()
     {
@@ -43,6 +41,14 @@ public class AgendaDeTurnosController : Controller
             return View();
         }
 
+        if (fecha < DateTime.Today)
+        {
+            ModelState.AddModelError(string.Empty, "La fecha del turno no puede ser menor al día actual.");
+            ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto", pacienteId);
+            ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto", profesionalId);
+            return View();
+        }
+
         bool existeTurno = _context.Turnos.Any(t => t.Fecha == fecha && t.ProfesionalId == profesionalId);
         if (existeTurno)
         {
@@ -58,7 +64,7 @@ public class AgendaDeTurnosController : Controller
         {
             return RedirectToAction("ListarTurnosAsignados");
         }
-        
+
         ModelState.AddModelError(string.Empty, "No se pudo asignar el turno.");
         ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto", pacienteId);
         ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto", profesionalId);
@@ -71,7 +77,6 @@ public class AgendaDeTurnosController : Controller
         return View(turnos);
     }
 
- 
     [HttpPost]
     public IActionResult CancelarTurno(int id)
     {
@@ -110,7 +115,6 @@ public class AgendaDeTurnosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult EditarTurno(int id, [Bind("Id,PacienteId,ProfesionalId,Fecha")] Turno turno)
     {
-
         if (id != turno.Id)
         {
             _logger.LogError("El Id del turno ({TurnoId}) no coincide con el Id de la URL ({Id}).", turno.Id, id);
@@ -144,5 +148,4 @@ public class AgendaDeTurnosController : Controller
         ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto", turno.ProfesionalId);
         return View(turno);
     }
-
 }
