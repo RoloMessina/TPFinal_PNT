@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using TPFinal_PNT1.Context;
 using TPFinal_PNT1.Models;
-using Microsoft.Extensions.Logging;
 
 
 public class AgendaDeTurnosController : Controller
@@ -22,7 +20,7 @@ public class AgendaDeTurnosController : Controller
 
     }
 
-    // Get para obtener vista de turno
+
     public IActionResult AsignarTurno()
     {
         ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto");
@@ -59,7 +57,7 @@ public class AgendaDeTurnosController : Controller
         {
             return RedirectToAction("ListarTurnosAsignados");
         }
-
+        
         ModelState.AddModelError(string.Empty, "No se pudo asignar el turno.");
         ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto", pacienteId);
         ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto", profesionalId);
@@ -72,7 +70,7 @@ public class AgendaDeTurnosController : Controller
         return View(turnos);
     }
 
-    
+ 
     [HttpPost]
     public IActionResult CancelarTurno(int id)
     {
@@ -84,55 +82,6 @@ public class AgendaDeTurnosController : Controller
 
         _agendaDeTurnos.CancelarTurno(turno);
         return RedirectToAction("ListarTurnosAsignados");
-    }
-
-    // Acción GET para mostrar el formulario de registrar tratamiento
-    [HttpGet]
-    public IActionResult RegistrarTratamiento()
-    {
-        ViewData["PacienteId"] = new SelectList(_context.Pacientes.ToList(), "Id", "NombreCompleto");
-        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales.ToList(), "Id", "NombreCompleto");
-        return View();
-    }
-
-    // Acción POST para procesar el formulario de registrar tratamiento
-    [HttpPost]
-    public IActionResult RegistrarTratamiento([Bind("Fecha,Tipo,PacienteId,ProfesionalId")] Tratamiento tratamiento)
-    {
-        // Excluir las propiedades de navegación del ModelState
-        ModelState.Remove("Paciente");
-        ModelState.Remove("Profesional");
-
-        if (ModelState.IsValid)
-        {
-            var paciente = _context.Pacientes.Find(tratamiento.PacienteId);
-            var profesional = _context.Profesionales.Find(tratamiento.ProfesionalId);
-
-            if (paciente == null || profesional == null)
-            {
-                ModelState.AddModelError(string.Empty, "Paciente o Profesional no encontrado.");
-                ViewData["PacienteId"] = new SelectList(_context.Pacientes.ToList(), "Id", "NombreCompleto", tratamiento.PacienteId);
-                ViewData["ProfesionalId"] = new SelectList(_context.Profesionales.ToList(), "Id", "NombreCompleto", tratamiento.ProfesionalId);
-                return View(tratamiento);
-            }
-
-            tratamiento.Paciente = paciente;
-            tratamiento.Profesional = profesional;
-
-            _context.Tratamientos.Add(tratamiento);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        var errors = ModelState.Values.SelectMany(v => v.Errors);
-        foreach (var error in errors)
-        {
-            _logger.LogError(error.ErrorMessage);
-        }
-
-        ViewData["PacienteId"] = new SelectList(_context.Pacientes.ToList(), "Id", "NombreCompleto", tratamiento.PacienteId);
-        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales.ToList(), "Id", "NombreCompleto", tratamiento.ProfesionalId);
-        return View(tratamiento);
     }
 
 }
