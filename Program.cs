@@ -43,6 +43,10 @@ app.MapControllerRoute(
     pattern: "{controller=AgendaDeTurnos}/{action=ListarTurnosAsignados}");
 
 app.MapControllerRoute(
+    name: "editarTurno",
+    pattern: "{controller=AgendaDeTurnos}/{action=EditarTurno}/{id?}");
+
+app.MapControllerRoute(
     name: "registrarTratamiento",
     pattern: "{controller=TratamientoController}/{action=RegistrarTratamiento}");
 

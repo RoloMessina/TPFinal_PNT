@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using TPFinal_PNT1.Context;
 using TPFinal_PNT1.Models;
 
@@ -82,6 +83,66 @@ public class AgendaDeTurnosController : Controller
 
         _agendaDeTurnos.CancelarTurno(turno);
         return RedirectToAction("ListarTurnosAsignados");
+    }
+
+    public IActionResult EditarTurno(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var turno = _context.Turnos
+            .Include(t => t.Paciente)
+            .Include(t => t.Profesional)
+            .FirstOrDefault(t => t.Id == id);
+        if (turno == null)
+        {
+            return NotFound();
+        }
+
+        ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto", turno.PacienteId);
+        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto", turno.ProfesionalId);
+        return View(turno);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult EditarTurno(int id, [Bind("Id,PacienteId,ProfesionalId,Fecha")] Turno turno)
+    {
+
+        if (id != turno.Id)
+        {
+            _logger.LogError("El Id del turno ({TurnoId}) no coincide con el Id de la URL ({Id}).", turno.Id, id);
+            return NotFound();
+        }
+        // Excluir las propiedades de navegación del ModelState
+        ModelState.Remove("Paciente");
+        ModelState.Remove("Profesional");
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                _agendaDeTurnos.ModificarTurno(turno);
+                return RedirectToAction(nameof(ListarTurnosAsignados));
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!_context.Turnos.Any(e => e.Id == turno.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        ViewData["PacienteId"] = new SelectList(_context.Pacientes, "Id", "NombreCompleto", turno.PacienteId);
+        ViewData["ProfesionalId"] = new SelectList(_context.Profesionales, "Id", "NombreCompleto", turno.ProfesionalId);
+        return View(turno);
     }
 
 }

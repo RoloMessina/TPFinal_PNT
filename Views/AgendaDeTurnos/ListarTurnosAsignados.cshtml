@@ -38,6 +38,7 @@
                         @Html.DisplayFor(modelItem => item.Profesional.NombreCompleto)
                     </td>
                     <td>
+                        <a class="btn btn-primary" asp-action="EditarTurno" asp-route-id="@item.Id">Editar</a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmCancelModal" data-turnoid="@item.Id">Cancelar</button>
                     </td>
                 </tr>
