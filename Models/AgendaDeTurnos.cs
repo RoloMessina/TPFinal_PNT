@@ -102,37 +102,10 @@ namespace TPFinal_PNT1.Models
             }
         }
 
-        public void VerTratamientosAsignados(Profesional profesional)
-        {
-            // Lógica para ver tratamientos asignados por un profesional
-        }
-
         public void VisualizarTurno(Turno turno)
         {
             throw new NotImplementedException();
         }
 
-        //public bool RegistrarTratamiento(Paciente paciente, Profesional profesional, Tratamiento tratamiento, Fecha fecha)
-        //{
-        // Lógica para registrar tratamiento
-        //  return true;
-        //}
-
-        //public Mensaje NotificarCambioTurno(Paciente paciente, Turno turno)
-        //{
-        //  // Lógica para notificar cambio de turno
-        //return new Mensaje();
-        //}
-
-        //public Mensaje RecordatorioTurno(Profesional profesional, Paciente paciente, Turno turno)
-        //{
-        // Lógica para enviar recordatorio de turno
-        //  return new Mensaje();
-        //}
-
-        //public void VerTratamientosAsignados(Profesional profesional)
-        //{
-        // Lógica para ver tratamientos asignados
-        //}
     }
 }
